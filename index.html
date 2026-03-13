@@ -396,7 +396,7 @@ textarea:focus { border-color:rgba(240,165,0,0.4); }
           messages: [
             {
               role: 'system',
-              content: 'You are an expert English teacher for Hindi speakers. Translate Hindi sentences to natural English accurately. Reply ONLY with valid JSON, no markdown, no extra text.\n\nFormat:\n{"english":"natural English translation","pronunciation":"syllable guide e.g. ai woz juhst JOK-ing","words":[{"en":"word","hi":"हिंदी अर्थ","ph":"how-to-say"}],"tips":["Hinglish grammar tip 1","Hinglish tip 2"]}'
+              content: 'You are an expert English teacher for Hindi speakers. Translate Hindi to natural English. CRITICAL: Reply ONLY with a single-line valid JSON object. No newlines inside strings. No apostrophes in values - use simple words only. No markdown. Example: {"english":"I was just joking","pronunciation":"ai woz juhst JOK-ing","words":[{"en":"joking","hi":"mazaak","ph":"JOK-ing"},{"en":"just","hi":"sirf","ph":"juhst"}],"tips":["Present continuous tense ke liye was+verb+ing use hota hai","Bas = just in English"]}'
             },
             { role: 'user', content: hindi }
           ]
@@ -411,8 +411,31 @@ textarea:focus { border-color:rgba(240,165,0,0.4); }
       }
 
       const data = await res.json();
-      const raw = data.choices[0].message.content.replace(/```json|```/g, '').trim();
-      const result = JSON.parse(raw);
+      let raw = data.choices[0].message.content;
+
+      // Extract JSON robustly - find first { to last }
+      const start = raw.indexOf('{');
+      const end = raw.lastIndexOf('}');
+      if (start === -1 || end === -1) throw new Error('AI ne galat response diya। Dobara try karo।');
+      raw = raw.slice(start, end + 1);
+
+      let result;
+      try {
+        result = JSON.parse(raw);
+      } catch(parseErr) {
+        // Fallback: extract just the english field manually
+        const engMatch = raw.match(/"english"\s*:\s*"([^"]+)"/);
+        if (engMatch) {
+          result = {
+            english: engMatch[1],
+            pronunciation: (raw.match(/"pronunciation"\s*:\s*"([^"]+)"/) || [])[1] || '',
+            words: [],
+            tips: []
+          };
+        } else {
+          throw new Error('Response parse nahi hua। Dobara try karo।');
+        }
+      }
       showResult(result, hindi);
 
     } catch (err) {
