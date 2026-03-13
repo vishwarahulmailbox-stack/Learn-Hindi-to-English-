@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Seekho — Hindi se English</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #1a1a26;
+    --border: #2a2a3e;
+    --accent: #f0a500;
+    --accent2: #e05c5c;
+    --accent3: #5ce0c4;
+    --text: #f0ede8;
+    --muted: #7a7a9a;
+    --glow: rgba(240, 165, 0, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Ambient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -20%;
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(ellipse, rgba(240,165,0,0.06) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -30%;
+    right: -10%;
+    width: 50%;
+    height: 80%;
+    background: radial-gradient(ellipse, rgba(92,224,196,0.05) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 52px;
+  }
+
+  .logo-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(240,165,0,0.15), rgba(240,165,0,0.05));
+    border: 1px solid rgba(240,165,0,0.3);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  h1 span.hindi {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--accent), #ff8c42);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  h1 span.english {
+    background: linear-gradient(135deg, var(--accent3), #4ab8ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Main card */
+  .main-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px;
+    margin-bottom: 28px;
+    box-shadow: 0 0 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .section-label {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Input area */
+  .input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .text-input {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    padding: 18px 20px;
+    resize: none;
+    min-height: 110px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .text-input::placeholder {
+    color: var(--muted);
+    opacity: 0.6;
+  }
+  .text-input:focus {
+    border-color: rgba(240,165,0,0.5);
+    box-shadow: 0 0 0 3px rgba(240,165,0,0.08);
+  }
+
+  /* Mic button */
+  .mic-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .mic-btn {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.2s;
+    position: relative;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent), #e08500);
+    box-shadow: 0 4px 20px rgba(240,165,0,0.3);
+  }
+  .mic-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 28px rgba(240,165,0,0.45);
+  }
+  .mic-btn.listening {
+    background: linear-gradient(135deg, var(--accent2), #c03030);
+    box-shadow: 0 4px 20px rgba(224,92,92,0.4);
+    animation: pulse-ring 1.2s ease-out infinite;
+  }
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(224,92,92,0.5); }
+    70%  { box-shadow: 0 0 0 18px rgba(224,92,92,0); }
+    100% { box-shadow: 0 0 0 0 rgba(224,92,92,0); }
+  }
+
+  .mic-label {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .mic-label strong {
+    color: var(--text);
+    font-weight: 600;
+    display: block;
+    font-size: 0.96rem;
+  }
+
+  /* Translate button */
+  .translate-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent), #e08500);
+    color: #0a0a0f;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(240,165,0,0.25);
+  }
+  .translate-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(240,165,0,0.4);
+  }
+  .translate-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Output section */
+  .output-section {
+    display: none;
+    animation: fadeSlideIn 0.5s ease forwards;
+  }
+  .output-section.visible { display: block; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .english-box {
+    background: linear-gradient(135deg, rgba(92,224,196,0.06), rgba(74,184,255,0.04));
+    border: 1.5px solid rgba(92,224,196,0.25);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .english-box::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: rgba(92,224,196,0.1);
+    line-height: 1;
+  }
+
+  .english-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-weight: 700;
+    color: var(--accent3);
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 14px;
+  }
+
+  .hindi-original {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    padding-top: 14px;
+    border-top: 1px solid rgba(92,224,196,0.15);
+  }
+  .hindi-original span {
+    color: rgba(240,237,232,0.6);
+  }
+
+  /* Word breakdown */
+  .breakdown-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .word-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .word-chip {
+    background: rgba(240,165,0,0.08);
+    border: 1px solid rgba(240,165,0,0.2);
+    border-radius: 10px;
+    padding: 8px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .word-chip:hover {
+    background: rgba(240,165,0,0.15);
+    border-color: rgba(240,165,0,0.4);
+    transform: translateY(-2px);
+  }
+  .word-chip .en-word {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--accent);
+    display: block;
+  }
+  .word-chip .hi-meaning {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 2px;
+    display: block;
+  }
+
+  /* Tips */
+  .tips-card {
+    background: linear-gradient(135deg, rgba(240,165,0,0.05), rgba(224,92,92,0.03));
+    border: 1px solid rgba(240,165,0,0.15);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+  }
+
+  .tips-list {
+    list-style: none;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .tips-list li {
+    font-size: 0.9rem;
+    color: rgba(240,237,232,0.75);
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .tips-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* Speak button */
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .action-btn {
+    flex: 1;
+    padding: 13px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+  .action-btn:hover {
+    background: var(--card);
+    border-color: rgba(240,165,0,0.3);
+    color: var(--accent);
+  }
+  .action-btn.speak-btn:hover {
+    border-color: rgba(92,224,196,0.4);
+    color: var(--accent3);
+  }
+
+  /* History */
+  .history-section {
+    margin-top: 36px;
+  }
+  .history-title {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .history-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .history-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .history-item:hover { border-color: rgba(240,165,0,0.3); }
+  .history-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: rgba(240,165,0,0.3);
+    min-width: 28px;
+  }
+  .history-texts .hi { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 0.85rem; color: var(--muted); }
+  .history-texts .en { font-size: 0.93rem; font-weight: 500; color: var(--text); margin-top: 3px; }
+
+  /* Loading */
+  .loading-dots {
+    display: none;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+  }
+  .loading-dots.show { display: flex; }
+  .loading-dots span {
+    width: 7px; height: 7px;
+    background: #0a0a0f;
+    border-radius: 50%;
+    animation: bounce 0.9s infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.30s; }
+  @keyframes bounce { 0%,80%,100%{transform:scale(1)} 40%{transform:scale(1.4)} }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  /* Error */
+  .error-msg {
+    background: rgba(224,92,92,0.08);
+    border: 1px solid rgba(224,92,92,0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 0.88rem;
+    color: #ff8a8a;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* Pronunciation */
+  .pronunc-box { background: rgba(240,165,0,0.07); border: 1px solid rgba(240,165,0,0.2); border-radius:10px; padding:12px 16px; margin:14px 0; position:relative; z-index:1; }
+  .pronunc-label { font-size:0.75rem; font-weight:600; letter-spacing:1px; color:var(--accent); margin-bottom:5px; text-transform:uppercase; }
+  .pronunc-text { font-family:"DM Sans",sans-serif; font-size:1rem; color:rgba(240,237,232,0.85); font-style:italic; letter-spacing:0.5px; line-height:1.6; }
+  .word-chip .phonetic { font-size:0.7rem; color:var(--accent); opacity:0.7; margin-top:1px; display:block; font-style:italic; }
+
+  @media (max-width: 600px) {
+    .main-card { padding: 24px 20px; }
+    .action-row { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo-tag">AI English Coach</div>
+    <h1><span class="hindi">हिंदी</span> से <span class="english">English</span></h1>
+    <p class="subtitle">हिंदी में बोलो या लिखो — AI तुम्हें English सिखाएगा 🎯</p>
+  </header>
+
+  <div class="main-card">
+    <div class="section-label">हिंदी में लिखो या बोलो</div>
+
+    <div class="input-area">
+      <textarea
+        class="text-input"
+        id="hindiInput"
+        placeholder="यहाँ हिंदी में लिखो... जैसे: 'मुझे कल दिल्ली जाना है' या 'क्या तुम मेरी मदद कर सकते हो?'"
+        rows="4"
+      ></textarea>
+
+      <div class="mic-row">
+        <button class="mic-btn" id="micBtn" title="माइक से बोलो">🎤</button>
+        <div class="mic-label">
+          <strong id="micStatus">माइक से बोलो</strong>
+          <span id="micHint">बटन दबाओ और हिंदी में बोलो</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="translate-btn" id="translateBtn" onclick="translateText()">
+      <span id="btnText">English में बदलो</span>
+      <span>✨</span>
+      <div class="loading-dots" id="loadingDots">
+        <span></span><span></span><span></span>
+      </div>
+    </button>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <!-- Output -->
+  <div class="output-section" id="outputSection">
+
+    <div class="english-box">
+      <div class="english-text" id="englishText"></div>
+      <div class="pronunc-box" id="pronuncBox" style="display:none">
+        <div class="pronunc-label">🗣️ Bolne ka tarika (Pronunciation)</div>
+        <div class="pronunc-text" id="pronuncText"></div>
+      </div>
+      <div class="hindi-original">
+        मूल हिंदी: <span id="originalHindi"></span>
+      </div>
+    </div>
+
+    <div class="breakdown-card" id="breakdownCard">
+      <div class="section-label">शब्द सीखो — tap करो pronunciation सुनने के लिए 🔊</div>
+      <div class="word-chips" id="wordChips"></div>
+    </div>
+
+    <div class="tips-card" id="tipsCard">
+      <div class="section-label">💡 Grammar Tips</div>
+      <ul class="tips-list" id="tipsList"></ul>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn speak-btn" onclick="speakEnglish()">🔊 सुनो (Listen)</button>
+      <button class="action-btn" onclick="copyEnglish()">📋 Copy करो</button>
+      <button class="action-btn" onclick="resetAll()">🔄 नया वाक्य</button>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="history-section" id="historySection" style="display:none">
+    <div class="history-title">पिछले translations</div>
+    <div id="historyList"></div>
+  </div>
+
+  <footer>Claude AI द्वारा powered • English सीखने का सबसे आसान तरीका</footer>
+</div>
+
+<script>
+  let recognition = null;
+  let isListening = false;
+  let history = [];
+
+  // Speech Recognition setup
+  function setupMic() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      document.getElementById('micBtn').style.opacity = '0.4';
+      document.getElementById('micHint').textContent = 'ब्राउज़र में माइक support नहीं है';
+      return;
+    }
+    recognition = new SpeechRecognition();
+    recognition.lang = 'hi-IN';
+    recognition.continuous = false;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      isListening = true;
+      document.getElementById('micBtn').classList.add('listening');
+      document.getElementById('micBtn').textContent = '⏹';
+      document.getElementById('micStatus').textContent = 'सुन रहा हूँ...';
+      document.getElementById('micHint').textContent = 'बोलते रहो, फिर रुको';
+    };
+
+    recognition.onresult = (e) => {
+      let transcript = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        transcript += e.results[i][0].transcript;
+      }
+      document.getElementById('hindiInput').value = transcript;
+    };
+
+    recognition.onend = () => {
+      isListening = false;
+      document.getElementById('micBtn').classList.remove('listening');
+      document.getElementById('micBtn').textContent = '🎤';
+      document.getElementById('micStatus').textContent = 'माइक से बोलो';
+      document.getElementById('micHint').textContent = 'बटन दबाओ और हिंदी में बोलो';
+    };
+
+    recognition.onerror = (e) => {
+      isListening = false;
+      document.getElementById('micBtn').classList.remove('listening');
+      document.getElementById('micBtn').textContent = '🎤';
+      document.getElementById('micStatus').textContent = 'माइक से बोलो';
+      if (e.error === 'not-allowed') {
+        showError('माइक की permission दो — browser settings में जाकर allow करो');
+      }
+    };
+  }
+
+  document.getElementById('micBtn').addEventListener('click', () => {
+    if (!recognition) { setupMic(); if (!recognition) return; }
+    if (isListening) {
+      recognition.stop();
+    } else {
+      document.getElementById('hindiInput').value = '';
+      recognition.start();
+    }
+  });
+
+  setupMic();
+
+  // Translate
+  async function translateText() {
+    const hindi = document.getElementById('hindiInput').value.trim();
+    if (!hindi) {
+      showError('पहले कुछ हिंदी में लिखो या बोलो!');
+      return;
+    }
+
+    hideError();
+    setLoading(true);
+
+    try {
+      // Try Claude API first (works when served from claude.ai or web server)
+      let result = null;
+      try {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            messages: [{
+              role: 'user',
+              content: `You are an English learning assistant for Hindi speakers. Given a Hindi sentence, provide a translation and pronunciation guide.
+
+Hindi input: "${hindi}"
+
+Respond ONLY in this exact JSON format (no markdown, no extra text):
+{
+  "english": "The natural English translation here",
+  "pronunciation": "phonetic spelling like: AY-m go-ing to DEL-ee tuh-MOR-oh",
+  "words": [
+    {"en": "word", "hi": "हिंदी अर्थ", "phonetic": "how-to-say"},
+    {"en": "word2", "hi": "हिंदी अर्थ", "phonetic": "how-to-say"}
+  ],
+  "tips": [
+    "Tip 1 in simple Hinglish",
+    "Tip 2 in simple Hinglish"
+  ]
+}`
+            }]
+          })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const raw = data.content[0].text;
+          const clean = raw.replace(/```json|```/g, '').trim();
+          result = JSON.parse(clean);
+        }
+      } catch(apiErr) {
+        // API not available (local file) — use offline fallback
+        console.log('API unavailable, using offline mode');
+      }
+
+      // Offline fallback using built-in dictionary
+      if (!result) {
+        result = offlineTranslate(hindi);
+      }
+
+      displayResult(result, hindi);
+      addToHistory(hindi, result.english);
+
+    } catch (err) {
+      showError('कुछ गड़बड़ हो गई। दोबारा try करो।');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // ── Offline dictionary fallback ──────────────────────────────
+  const dict = {
+    'मैं': {en:'I', ph:'ai'}, 'मुझे': {en:'I / me', ph:'ai / mee'},
+    'तुम': {en:'you', ph:'yoo'}, 'आप': {en:'you (respect)', ph:'yoo'},
+    'वह': {en:'he / she', ph:'hee / shee'}, 'हम': {en:'we', ph:'wee'},
+    'यह': {en:'this', ph:'dhis'}, 'वो': {en:'that', ph:'dhat'},
+    'है': {en:'is / am / are', ph:'iz'}, 'हैं': {en:'are', ph:'aa-r'},
+    'था': {en:'was', ph:'woz'}, 'होगा': {en:'will be', ph:'wil bee'},
+    'जाना': {en:'to go', ph:'tu go'}, 'जाना है': {en:'have to go', ph:'hav tu go'},
+    'आना': {en:'to come', ph:'tu kum'}, 'करना': {en:'to do', ph:'tu doo'},
+    'खाना': {en:'food / to eat', ph:'food / tu eet'},
+    'पानी': {en:'water', ph:'waa-ter'}, 'घर': {en:'home', ph:'hohm'},
+    'काम': {en:'work', ph:'wurk'}, 'नाम': {en:'name', ph:'naym'},
+    'कल': {en:'yesterday / tomorrow', ph:'yes-ter-day / tuh-mor-oh'},
+    'आज': {en:'today', ph:'tuh-day'}, 'अभी': {en:'now', ph:'now'},
+    'दिल्ली': {en:'Delhi', ph:'DEL-ee'}, 'मदद': {en:'help', ph:'help'},
+    'कर': {en:'do', ph:'doo'}, 'सकते': {en:'can', ph:'kan'},
+    'हो': {en:'are', ph:'aa-r'}, 'प्यार': {en:'love', ph:'luv'},
+    'अच्छा': {en:'good / okay', ph:'good / oh-kay'},
+    'बुरा': {en:'bad', ph:'bad'}, 'बड़ा': {en:'big', ph:'big'},
+    'छोटा': {en:'small', ph:'smol'}, 'सुंदर': {en:'beautiful', ph:'byoo-ti-ful'},
+    'पैसा': {en:'money', ph:'muh-nee'}, 'समय': {en:'time', ph:'taim'},
+    'खुश': {en:'happy', ph:'hap-ee'}, 'दुखी': {en:'sad', ph:'sad'},
+    'थका': {en:'tired', ph:'tai-erd'}, 'भूख': {en:'hunger', ph:'hung-er'},
+    'नींद': {en:'sleep', ph:'sleep'}, 'दोस्त': {en:'friend', ph:'frend'},
+    'परिवार': {en:'family', ph:'fam-i-lee'}, 'बच्चा': {en:'child', ph:'chaild'},
+    'स्कूल': {en:'school', ph:'skool'}, 'पढ़ना': {en:'to study / read', ph:'tu stud-ee'},
+    'लिखना': {en:'to write', ph:'tu rait'}, 'बोलना': {en:'to speak', ph:'tu speek'},
+    'सुनना': {en:'to listen', ph:'tu lis-en'}, 'देखना': {en:'to see', ph:'tu see'},
+    'मिलना': {en:'to meet', ph:'tu meet'}, 'चाहिए': {en:'need / want', ph:'need / wont'},
+    'कहाँ': {en:'where', ph:'wair'}, 'क्या': {en:'what', ph:'wot'},
+    'कैसे': {en:'how', ph:'how'}, 'क्यों': {en:'why', ph:'wai'},
+    'कब': {en:'when', ph:'wen'}, 'कौन': {en:'who', ph:'hoo'},
+    'नहीं': {en:'no / not', ph:'no / not'}, 'हाँ': {en:'yes', ph:'yes'},
+    'धन्यवाद': {en:'thank you', ph:'thank yoo'}, 'माफ': {en:'sorry', ph:'sor-ee'},
+  };
+
+  function offlineTranslate(hindi) {
+    // Find matching words
+    const words = [];
+    const foundEntries = [];
+    for (const [hi, val] of Object.entries(dict)) {
+      if (hindi.includes(hi)) {
+        foundEntries.push({hi, ...val});
+        words.push({en: val.en, hi: hi, phonetic: val.ph});
+      }
+    }
+
+    // Build rough translation
+    let engParts = foundEntries.map(e => e.en.split('/')[0].trim());
+    const english = engParts.length
+      ? engParts.join(' ') + '.'
+      : '[Please open in a web browser for full AI translation]';
+
+    const phonetic = words.map(w => w.phonetic).join(' — ');
+
+    return {
+      english: english,
+      pronunciation: phonetic || 'Browser mein kholo for full pronunciation',
+      words: words.length ? words : [{en: 'Open in browser', hi: 'पूरी translation के लिए', phonetic: 'oh-pen in brow-zer'}],
+      tips: [
+        'इस app को web browser में खोलो full AI translation के लिए',
+        'शब्दों पर tap करो pronunciation सुनने के लिए',
+        '🔊 Listen button dabao English sentence sunne ke liye'
+      ],
+      offline: true
+    };
+  }
+
+  function displayResult(result, originalHindi) {
+    document.getElementById('englishText').textContent = result.english;
+    document.getElementById('originalHindi').textContent = originalHindi;
+
+    // Pronunciation guide
+    const pronuncBox = document.getElementById('pronuncBox');
+    const pronuncText = document.getElementById('pronuncText');
+    if (result.pronunciation) {
+      pronuncText.textContent = result.pronunciation;
+      pronuncBox.style.display = 'block';
+    } else {
+      pronuncBox.style.display = 'none';
+    }
+
+    // Words with phonetics
+    const chips = document.getElementById('wordChips');
+    chips.innerHTML = '';
+    if (result.words && result.words.length) {
+      result.words.forEach(w => {
+        const chip = document.createElement('div');
+        chip.className = 'word-chip';
+        chip.innerHTML = `<span class="en-word">${w.en}</span><span class="hi-meaning">${w.hi}</span>${w.phonetic ? `<span class="phonetic">${w.phonetic}</span>` : ''}`;
+        chip.title = 'Tap to hear pronunciation';
+        chip.onclick = () => { speakWord(w.en.split('/')[0].trim()); chip.style.borderColor='rgba(92,224,196,0.6)'; setTimeout(()=>chip.style.borderColor='',1000); };
+        chips.appendChild(chip);
+      });
+      document.getElementById('breakdownCard').style.display = 'block';
+    } else {
+      document.getElementById('breakdownCard').style.display = 'none';
+    }
+
+    // Tips
+    const tipsList = document.getElementById('tipsList');
+    tipsList.innerHTML = '';
+    if (result.tips && result.tips.length) {
+      result.tips.forEach(tip => {
+        const li = document.createElement('li');
+        li.textContent = tip;
+        tipsList.appendChild(li);
+      });
+      document.getElementById('tipsCard').style.display = 'block';
+    } else {
+      document.getElementById('tipsCard').style.display = 'none';
+    }
+
+    const out = document.getElementById('outputSection');
+    out.classList.add('visible');
+    out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function speakEnglish() {
+    const text = document.getElementById('englishText').textContent;
+    if (!text) return;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 0.85;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utter);
+  }
+
+  function speakWord(word) {
+    const utter = new SpeechSynthesisUtterance(word);
+    utter.lang = 'en-US';
+    utter.rate = 0.8;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utter);
+  }
+
+  function copyEnglish() {
+    const text = document.getElementById('englishText').textContent;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.action-btn:nth-child(2)');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = '📋 Copy करो'; }, 2000);
+    });
+  }
+
+  function resetAll() {
+    document.getElementById('hindiInput').value = '';
+    document.getElementById('outputSection').classList.remove('visible');
+    document.getElementById('hindiInput').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function addToHistory(hindi, english) {
+    history.unshift({ hindi, english });
+    if (history.length > 6) history.pop();
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const sec = document.getElementById('historySection');
+    const list = document.getElementById('historyList');
+    if (history.length === 0) { sec.style.display = 'none'; return; }
+    sec.style.display = 'block';
+    list.innerHTML = '';
+    history.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'history-item';
+      div.innerHTML = `
+        <div class="history-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="history-texts">
+          <div class="hi">${item.hindi}</div>
+          <div class="en">${item.english}</div>
+        </div>`;
+      div.onclick = () => {
+        document.getElementById('hindiInput').value = item.hindi;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+      list.appendChild(div);
+    });
+  }
+
+  function setLoading(state) {
+    const btn = document.getElementById('translateBtn');
+    const dots = document.getElementById('loadingDots');
+    const txt = document.getElementById('btnText');
+    btn.disabled = state;
+    dots.classList.toggle('show', state);
+    txt.style.display = state ? 'none' : 'inline';
+    if (state) btn.querySelector('span:nth-child(2)').style.display = 'none';
+    else btn.querySelector('span:nth-child(2)').style.display = 'inline';
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+  function hideError() {
+    document.getElementById('errorMsg').style.display = 'none';
+  }
+
+  // Enter key shortcut
+  document.getElementById('hindiInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) translateText();
+  });
+</script>
+</body>
+</html>
