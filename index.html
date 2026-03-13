@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Hind:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-
 body {
   font-family: 'Hind', sans-serif;
   background: #0d0d1a;
@@ -15,409 +14,213 @@ body {
   min-height: 100vh;
   padding-bottom: 60px;
 }
-
-/* ── HEADER ── */
 .header {
   background: linear-gradient(135deg, #1a1a30, #12122a);
   border-bottom: 1px solid rgba(255,255,255,0.06);
   padding: 20px 20px 18px;
   text-align: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: sticky; top: 0; z-index: 10;
   box-shadow: 0 4px 30px rgba(0,0,0,0.5);
 }
 .badge {
   display: inline-block;
   background: rgba(240,165,0,0.12);
   border: 1px solid rgba(240,165,0,0.3);
-  color: #f0a500;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  padding: 4px 14px;
-  border-radius: 20px;
-  margin-bottom: 10px;
+  color: #f0a500; font-size: 10px; font-weight: 600;
+  letter-spacing: 3px; padding: 4px 14px; border-radius: 20px; margin-bottom: 10px;
 }
-.title {
-  font-family: 'Baloo 2', cursive;
-  font-size: 2rem;
-  font-weight: 800;
-  line-height: 1.15;
-}
-.title .hi { color: #f0a500; }
-.title .en { color: #5ce0c4; }
+.title { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; line-height:1.15; }
+.title .hi { color:#f0a500; }
+.title .en { color:#5ce0c4; }
 .subtitle {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 0.82rem;
-  color: rgba(240,237,232,0.4);
-  margin-top: 5px;
+  font-family:'Noto Sans Devanagari',sans-serif;
+  font-size:0.82rem; color:rgba(240,237,232,0.4); margin-top:5px;
 }
-
-/* ── MAIN ── */
-.main {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px 16px 0;
+.key-status {
+  margin-top:8px; font-size:0.75rem; color:rgba(255,255,255,0.3);
+  display:flex; align-items:center; justify-content:center; gap:8px;
 }
-
-/* ── CARD ── */
+.key-status .dot { width:7px; height:7px; border-radius:50%; background:#444; display:inline-block; }
+.key-status.connected .dot { background:#5ce0c4; }
+.change-key { color:rgba(240,165,0,0.7); cursor:pointer; text-decoration:underline; font-size:0.72rem; }
+.main { max-width:600px; margin:0 auto; padding:20px 16px 0; }
 .card {
-  background: #181828;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  background:#181828; border:1px solid rgba(255,255,255,0.07);
+  border-radius:20px; padding:20px; margin-bottom:16px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
 }
 .card-label {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,0.28);
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-family:'Noto Sans Devanagari',sans-serif;
+  font-size:10px; font-weight:600; letter-spacing:2px;
+  color:rgba(255,255,255,0.28); text-transform:uppercase;
+  margin-bottom:12px; display:flex; align-items:center; gap:8px;
 }
-.card-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: rgba(255,255,255,0.06);
-}
-
-/* ── TEXTAREA ── */
+.card-label::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.06); }
 textarea {
-  width: 100%;
-  background: #0f0f1e;
-  border: 1.5px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
-  color: #f0ede8;
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  padding: 14px 16px;
-  resize: none;
-  min-height: 100px;
-  outline: none;
-  transition: border-color 0.2s;
+  width:100%; background:#0f0f1e;
+  border:1.5px solid rgba(255,255,255,0.08); border-radius:14px;
+  color:#f0ede8; font-family:'Noto Sans Devanagari',sans-serif;
+  font-size:1.05rem; line-height:1.7; padding:14px 16px;
+  resize:none; min-height:100px; outline:none; transition:border-color 0.2s;
 }
-textarea::placeholder { color: rgba(255,255,255,0.18); }
-textarea:focus { border-color: rgba(240,165,0,0.4); }
-
-/* ── MIC ── */
-.mic-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 14px;
-}
+textarea::placeholder { color:rgba(255,255,255,0.18); }
+textarea:focus { border-color:rgba(240,165,0,0.4); }
+.mic-row { display:flex; align-items:center; gap:14px; margin-top:14px; }
 .mic-btn {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.2s;
-  background: linear-gradient(135deg, #f0a500, #d47f00);
-  box-shadow: 0 4px 16px rgba(240,165,0,0.3);
+  width:54px; height:54px; border-radius:50%; border:none; cursor:pointer;
+  font-size:1.3rem; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; transition:all 0.2s;
+  background:linear-gradient(135deg,#f0a500,#d47f00);
+  box-shadow:0 4px 16px rgba(240,165,0,0.3);
 }
-.mic-btn:hover { transform: scale(1.08); }
+.mic-btn:hover { transform:scale(1.08); }
 .mic-btn.listening {
-  background: linear-gradient(135deg, #e05c5c, #b03030);
-  animation: pulse 1.2s infinite;
+  background:linear-gradient(135deg,#e05c5c,#b03030);
+  animation:pulse 1.2s infinite;
 }
 @keyframes pulse {
-  0%   { box-shadow: 0 0 0 0   rgba(224,92,92,0.5); }
-  70%  { box-shadow: 0 0 0 14px rgba(224,92,92,0); }
-  100% { box-shadow: 0 0 0 0   rgba(224,92,92,0); }
+  0%   { box-shadow:0 0 0 0    rgba(224,92,92,0.5); }
+  70%  { box-shadow:0 0 0 14px rgba(224,92,92,0); }
+  100% { box-shadow:0 0 0 0    rgba(224,92,92,0); }
 }
 .mic-info strong { font-size:0.9rem; display:block; color:#f0ede8; }
-.mic-info span {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.35);
-}
-
-/* ── TRANSLATE BUTTON ── */
+.mic-info span { font-family:'Noto Sans Devanagari',sans-serif; font-size:0.78rem; color:rgba(255,255,255,0.35); }
 .translate-btn {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #f0a500, #d47f00);
-  color: #0d0d1a;
-  font-family: 'Baloo 2', cursive;
-  font-size: 1.05rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 14px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 4px 20px rgba(240,165,0,0.25);
+  width:100%; padding:15px; border:none; border-radius:14px;
+  background:linear-gradient(135deg,#f0a500,#d47f00); color:#0d0d1a;
+  font-family:'Baloo 2',cursive; font-size:1.05rem; font-weight:700;
+  cursor:pointer; margin-top:14px; transition:all 0.2s;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  box-shadow:0 4px 20px rgba(240,165,0,0.25);
 }
-.translate-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(240,165,0,0.4);
-}
-.translate-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-
+.translate-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 28px rgba(240,165,0,0.4); }
+.translate-btn:disabled { opacity:0.45; cursor:not-allowed; }
 .spinner {
-  width: 18px; height: 18px;
-  border: 2.5px solid rgba(0,0,0,0.2);
-  border-top-color: #0d0d1a;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  display: inline-block;
+  width:18px; height:18px; border:2.5px solid rgba(0,0,0,0.2);
+  border-top-color:#0d0d1a; border-radius:50%;
+  animation:spin 0.7s linear infinite; display:inline-block;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── ERROR ── */
+@keyframes spin { to { transform:rotate(360deg); } }
 .error-box {
-  background: rgba(224,92,92,0.08);
-  border: 1px solid rgba(224,92,92,0.25);
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 0.88rem;
-  color: #ff8a8a;
-  margin-top: 12px;
-  display: none;
+  background:rgba(224,92,92,0.08); border:1px solid rgba(224,92,92,0.25);
+  border-radius:12px; padding:12px 16px;
+  font-family:'Noto Sans Devanagari',sans-serif; font-size:0.88rem;
+  color:#ff8a8a; margin-top:12px; display:none; line-height:1.5;
 }
-
-/* ── OUTPUT ── */
-.output-section {
-  display: none;
-}
-.output-section.show {
-  display: block;
-  animation: slideUp 0.4s ease forwards;
-}
-@keyframes slideUp {
-  from { opacity:0; transform:translateY(20px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
-/* English card */
+.output-section { display:none; }
+.output-section.show { display:block; animation:slideUp 0.4s ease forwards; }
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 .english-card {
-  background: linear-gradient(135deg, rgba(92,224,196,0.07), rgba(74,184,255,0.04));
-  border: 1.5px solid rgba(92,224,196,0.2);
-  border-radius: 20px;
-  padding: 22px;
-  margin-bottom: 14px;
-  position: relative;
-  overflow: hidden;
+  background:linear-gradient(135deg,rgba(92,224,196,0.07),rgba(74,184,255,0.04));
+  border:1.5px solid rgba(92,224,196,0.2); border-radius:20px;
+  padding:22px; margin-bottom:14px; position:relative; overflow:hidden;
 }
 .english-card::before {
-  content: '"';
-  position: absolute;
-  top: -12px; left: 14px;
-  font-size: 5rem;
-  color: rgba(92,224,196,0.07);
-  font-family: 'Baloo 2', cursive;
-  line-height: 1;
+  content:'"'; position:absolute; top:-12px; left:14px;
+  font-size:5rem; color:rgba(92,224,196,0.07);
+  font-family:'Baloo 2',cursive; line-height:1;
 }
-.en-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: rgba(92,224,196,0.6);
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
+.en-label { font-size:10px; font-weight:600; letter-spacing:2px; color:rgba(92,224,196,0.6); text-transform:uppercase; margin-bottom:10px; }
 .en-text {
-  font-family: 'Baloo 2', cursive;
-  font-size: clamp(1.2rem, 4vw, 1.6rem);
-  font-weight: 700;
-  color: #5ce0c4;
-  line-height: 1.4;
-  margin-bottom: 14px;
-  position: relative;
-  z-index: 1;
+  font-family:'Baloo 2',cursive; font-size:clamp(1.2rem,4vw,1.6rem);
+  font-weight:700; color:#5ce0c4; line-height:1.4; margin-bottom:14px; position:relative; z-index:1;
 }
-
-/* Pronunciation */
 .pronunc-box {
-  background: rgba(240,165,0,0.08);
-  border: 1px solid rgba(240,165,0,0.2);
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin-bottom: 12px;
+  background:rgba(240,165,0,0.08); border:1px solid rgba(240,165,0,0.2);
+  border-radius:10px; padding:10px 14px; margin-bottom:12px; display:none;
 }
-.pronunc-label {
-  font-size: 10px;
-  color: #f0a500;
-  font-weight: 600;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-}
-.pronunc-text {
-  font-size: 0.95rem;
-  color: rgba(240,237,232,0.85);
-  font-style: italic;
-  line-height: 1.5;
-}
-
+.pronunc-label { font-size:10px; color:#f0a500; font-weight:600; letter-spacing:1px; margin-bottom:4px; }
+.pronunc-text { font-size:0.95rem; color:rgba(240,237,232,0.85); font-style:italic; line-height:1.5; }
 .original-hindi {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.3);
-  border-top: 1px solid rgba(92,224,196,0.1);
-  padding-top: 10px;
+  font-family:'Noto Sans Devanagari',sans-serif; font-size:0.82rem;
+  color:rgba(255,255,255,0.3); border-top:1px solid rgba(92,224,196,0.1); padding-top:10px;
 }
-.original-hindi span { color: rgba(255,255,255,0.5); }
-
-/* Word chips */
-.words-card {
-  background: #181828;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 14px;
-}
-.chips-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
-}
+.original-hindi span { color:rgba(255,255,255,0.5); }
+.words-card { background:#181828; border:1px solid rgba(255,255,255,0.07); border-radius:18px; padding:18px; margin-bottom:14px; display:none; }
+.chips-wrap { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
 .chip {
-  background: rgba(240,165,0,0.07);
-  border: 1px solid rgba(240,165,0,0.18);
-  border-radius: 12px;
-  padding: 8px 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.18s;
-  min-width: 70px;
+  background:rgba(240,165,0,0.07); border:1px solid rgba(240,165,0,0.18);
+  border-radius:12px; padding:8px 14px; text-align:center;
+  cursor:pointer; transition:all 0.18s; min-width:70px;
 }
-.chip:hover, .chip.active {
-  background: rgba(240,165,0,0.16);
-  border-color: rgba(92,224,196,0.5);
-  transform: translateY(-2px);
-}
+.chip:hover, .chip.active { background:rgba(240,165,0,0.16); border-color:rgba(92,224,196,0.5); transform:translateY(-2px); }
 .chip-en { font-weight:700; font-size:0.9rem; color:#f0a500; display:block; }
-.chip-hi {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.4);
-  display: block;
-  margin-top: 2px;
-}
-.chip-ph {
-  font-size: 0.68rem;
-  color: #5ce0c4;
-  display: block;
-  margin-top: 1px;
-  font-style: italic;
-  opacity: 0.8;
-}
-
-/* Tips */
-.tips-card {
-  background: rgba(240,165,0,0.04);
-  border: 1px solid rgba(240,165,0,0.12);
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 14px;
-}
+.chip-hi { font-family:'Noto Sans Devanagari',sans-serif; font-size:0.7rem; color:rgba(255,255,255,0.4); display:block; margin-top:2px; }
+.chip-ph { font-size:0.68rem; color:#5ce0c4; display:block; margin-top:1px; font-style:italic; opacity:0.8; }
+.tips-card { background:rgba(240,165,0,0.04); border:1px solid rgba(240,165,0,0.12); border-radius:18px; padding:18px; margin-bottom:14px; display:none; }
 .tip-item {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 0.85rem;
-  color: rgba(240,237,232,0.7);
-  padding: 8px 0 8px 20px;
-  position: relative;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  line-height: 1.5;
+  font-family:'Noto Sans Devanagari',sans-serif; font-size:0.85rem;
+  color:rgba(240,237,232,0.7); padding:8px 0 8px 20px;
+  position:relative; border-bottom:1px solid rgba(255,255,255,0.04); line-height:1.5;
 }
-.tip-item:last-child { border-bottom: none; }
+.tip-item:last-child { border-bottom:none; }
 .tip-item::before { content:'→'; position:absolute; left:0; color:#f0a500; }
-
-/* Action row */
-.action-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 14px;
-}
+.action-row { display:flex; gap:10px; margin-bottom:14px; }
 .action-btn {
-  flex: 1;
-  padding: 13px 6px;
-  border-radius: 12px;
-  border: 1.5px solid rgba(255,255,255,0.08);
-  background: #181828;
-  color: rgba(255,255,255,0.55);
-  font-family: 'Hind', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.18s;
+  flex:1; padding:13px 6px; border-radius:12px;
+  border:1.5px solid rgba(255,255,255,0.08); background:#181828;
+  color:rgba(255,255,255,0.55); font-family:'Hind',sans-serif;
+  font-size:0.82rem; font-weight:600; cursor:pointer; transition:all 0.18s;
 }
-.action-btn:hover {
-  background: #1f1f35;
-  border-color: rgba(240,165,0,0.3);
-  color: #f0a500;
-}
-
-/* History */
+.action-btn:hover { background:#1f1f35; border-color:rgba(240,165,0,0.3); color:#f0a500; }
 .hist-item {
-  background: #181828;
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 14px;
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: border-color 0.18s;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
+  background:#181828; border:1px solid rgba(255,255,255,0.06);
+  border-radius:14px; padding:14px 16px; margin-bottom:10px;
+  cursor:pointer; transition:border-color 0.18s;
+  display:flex; gap:12px; align-items:flex-start;
 }
-.hist-item:hover { border-color: rgba(240,165,0,0.25); }
-.hist-num {
-  font-family: 'Baloo 2', cursive;
-  font-weight: 700;
-  font-size: 1rem;
-  color: rgba(240,165,0,0.25);
-  min-width: 26px;
-}
-.hist-hi {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.35);
-}
+.hist-item:hover { border-color:rgba(240,165,0,0.25); }
+.hist-num { font-family:'Baloo 2',cursive; font-weight:700; font-size:1rem; color:rgba(240,165,0,0.25); min-width:26px; }
+.hist-hi { font-family:'Noto Sans Devanagari',sans-serif; font-size:0.8rem; color:rgba(255,255,255,0.35); }
 .hist-en { font-size:0.9rem; color:#f0ede8; margin-top:2px; }
 
-@media (max-width: 480px) {
-  .title { font-size: 1.7rem; }
-  .action-row { flex-wrap: wrap; }
+/* Modal */
+.modal-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+  z-index:100; align-items:center; justify-content:center; padding:20px;
 }
+.modal-overlay.show { display:flex; }
+.modal-box {
+  background:#181828; border:1px solid rgba(240,165,0,0.3);
+  border-radius:20px; padding:28px; max-width:400px; width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+.modal-title { font-family:'Baloo 2',cursive; font-size:1.2rem; font-weight:700; color:#f0a500; margin-bottom:6px; }
+.modal-sub { font-family:'Noto Sans Devanagari',sans-serif; font-size:0.82rem; color:rgba(255,255,255,0.45); margin-bottom:18px; line-height:1.6; }
+.modal-sub a { color:#5ce0c4; }
+.modal-steps { background:rgba(92,224,196,0.05); border:1px solid rgba(92,224,196,0.15); border-radius:12px; padding:14px; margin-bottom:16px; }
+.modal-step { font-family:'Noto Sans Devanagari',sans-serif; font-size:0.8rem; color:rgba(255,255,255,0.6); padding:4px 0; display:flex; gap:8px; align-items:flex-start; line-height:1.4; }
+.step-num { background:rgba(92,224,196,0.15); color:#5ce0c4; font-size:0.7rem; font-weight:700; min-width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+.key-input {
+  width:100%; background:#0f0f1e; border:1.5px solid rgba(255,255,255,0.1);
+  border-radius:10px; color:#f0ede8; padding:12px 14px; font-size:0.9rem;
+  outline:none; margin-bottom:12px; transition:border-color 0.2s; font-family:monospace;
+}
+.key-input:focus { border-color:rgba(240,165,0,0.4); }
+.key-input::placeholder { color:rgba(255,255,255,0.2); font-family:'Hind',sans-serif; }
+.modal-save { width:100%; padding:13px; border:none; border-radius:12px; background:linear-gradient(135deg,#f0a500,#d47f00); color:#0d0d1a; font-family:'Baloo 2',cursive; font-size:1rem; font-weight:700; cursor:pointer; margin-bottom:8px; }
+.modal-cancel { width:100%; padding:10px; border:1px solid rgba(255,255,255,0.08); border-radius:12px; background:transparent; color:rgba(255,255,255,0.35); font-size:0.85rem; cursor:pointer; }
+
+@media (max-width:480px) { .title{font-size:1.7rem;} .action-row{flex-wrap:wrap;} }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="badge">AI ENGLISH COACH</div>
+  <div class="badge">AI ENGLISH COACH • GROQ FREE</div>
   <div class="title"><span class="hi">हिंदी</span> से <span class="en">English</span></div>
   <div class="subtitle">हिंदी में बोलो या लिखो — AI तुम्हें English सिखाएगा 🎯</div>
+  <div class="key-status" id="keyStatus">
+    <span class="dot"></span>
+    <span id="keyStatusText">Groq API key नहीं है</span>
+    <span class="change-key" onclick="showModal()">Key daalo</span>
+  </div>
 </div>
 
 <div class="main">
-
-  <!-- Input Card -->
   <div class="card">
     <div class="card-label">हिंदी में लिखो या बोलो</div>
     <textarea id="hindiInput" placeholder="यहाँ हिंदी में लिखो... जैसे: 'मैं तो बस मजाक कर रहा हूं'"></textarea>
-
     <div class="mic-row">
       <button class="mic-btn" id="micBtn">🎤</button>
       <div class="mic-info">
@@ -425,63 +228,111 @@ textarea:focus { border-color: rgba(240,165,0,0.4); }
         <span id="micHint">बटन दबाओ और हिंदी में बोलो</span>
       </div>
     </div>
-
-    <button class="translate-btn" id="translateBtn" onclick="translate()">
+    <button class="translate-btn" id="translateBtn" onclick="doTranslate()">
       <span id="btnContent">English में बदलो ✨</span>
     </button>
     <div class="error-box" id="errorBox"></div>
   </div>
 
-  <!-- Output -->
   <div class="output-section" id="outputSection">
-
     <div class="english-card">
       <div class="en-label">✅ English Translation</div>
       <div class="en-text" id="enText"></div>
-      <div class="pronunc-box" id="pronuncBox" style="display:none">
+      <div class="pronunc-box" id="pronuncBox">
         <div class="pronunc-label">🗣️ BOLNE KA TARIKA (PRONUNCIATION)</div>
         <div class="pronunc-text" id="pronuncText"></div>
       </div>
       <div class="original-hindi">मूल हिंदी: <span id="origHindi"></span></div>
     </div>
-
-    <div class="words-card" id="wordsCard" style="display:none">
+    <div class="words-card" id="wordsCard">
       <div class="card-label">शब्द सीखो — tap करो सुनने के लिए 🔊</div>
       <div class="chips-wrap" id="chipsWrap"></div>
     </div>
-
-    <div class="tips-card" id="tipsCard" style="display:none">
+    <div class="tips-card" id="tipsCard">
       <div class="card-label">💡 Grammar Tips</div>
       <div id="tipsList"></div>
     </div>
-
     <div class="action-row">
-      <button class="action-btn" onclick="speakText()">🔊 सुनो</button>
-      <button class="action-btn" onclick="copyText()">📋 Copy</button>
+      <button class="action-btn" onclick="speakEnglish()">🔊 सुनो</button>
+      <button class="action-btn" id="copyBtn" onclick="copyText()">📋 Copy</button>
       <button class="action-btn" onclick="resetAll()">🔄 नया</button>
     </div>
-
     <div id="historySection" style="display:none">
       <div class="card-label" style="margin-bottom:10px">पिछले translations</div>
       <div id="historyList"></div>
     </div>
+  </div>
+</div>
 
+<!-- Modal -->
+<div class="modal-overlay" id="apiModal">
+  <div class="modal-box">
+    <div class="modal-title">🔑 Groq API Key Daalo</div>
+    <div class="modal-sub">
+      Groq bilkul <strong style="color:#5ce0c4">FREE</strong> hai!<br>
+      Sirf ek baar key daalni hai — phone mein save ho jaayegi।
+    </div>
+    <div class="modal-steps">
+      <div class="modal-step"><span class="step-num">1</span><span><a href="https://console.groq.com" target="_blank">console.groq.com</a> pe jaao → Free account banao</span></div>
+      <div class="modal-step"><span class="step-num">2</span><span>Left menu mein "API Keys" click karo</span></div>
+      <div class="modal-step"><span class="step-num">3</span><span>"Create API Key" → Copy karo</span></div>
+      <div class="modal-step"><span class="step-num">4</span><span>Neeche paste karo</span></div>
+    </div>
+    <input class="key-input" id="apiKeyInput" type="password" placeholder="gsk_xxxxxxxxxxxxxxxxxxxx">
+    <button class="modal-save" onclick="saveKey()">Save & Shuru Karo ✨</button>
+    <button class="modal-cancel" onclick="hideModal()">Baad mein</button>
   </div>
 </div>
 
 <script>
-  // ── Speech Recognition ──
-  let recognition = null;
-  let isListening = false;
+  // Key management
+  function getKey() { return localStorage.getItem('groq_key') || ''; }
 
-  (function initMic() {
+  function saveKey() {
+    const key = document.getElementById('apiKeyInput').value.trim();
+    const inp = document.getElementById('apiKeyInput');
+    if (!key.startsWith('gsk_')) {
+      inp.style.borderColor = 'rgba(224,92,92,0.6)';
+      inp.placeholder = '❌ gsk_ se shuru honi chahiye!';
+      return;
+    }
+    localStorage.setItem('groq_key', key);
+    hideModal();
+    updateStatus();
+    doTranslate();
+  }
+
+  function updateStatus() {
+    const ks = document.getElementById('keyStatus');
+    const kt = document.getElementById('keyStatusText');
+    const ck = document.querySelector('.change-key');
+    if (getKey()) {
+      ks.classList.add('connected');
+      kt.textContent = 'Groq connected ✓';
+      ck.textContent = 'Key badlo';
+    } else {
+      ks.classList.remove('connected');
+      kt.textContent = 'Groq API key नहीं है';
+      ck.textContent = 'Key daalo';
+    }
+  }
+
+  function showModal() {
+    document.getElementById('apiModal').classList.add('show');
+    setTimeout(() => document.getElementById('apiKeyInput').focus(), 150);
+  }
+  function hideModal() { document.getElementById('apiModal').classList.remove('show'); }
+  document.getElementById('apiKeyInput').addEventListener('keydown', e => { if (e.key==='Enter') saveKey(); });
+
+  // Mic
+  let recognition = null, isListening = false;
+  (function() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) return;
     recognition = new SR();
     recognition.lang = 'hi-IN';
     recognition.continuous = false;
     recognition.interimResults = true;
-
     recognition.onstart = () => {
       isListening = true;
       document.getElementById('micBtn').classList.add('listening');
@@ -505,94 +356,80 @@ textarea:focus { border-color: rgba(240,165,0,0.4); }
       isListening = false;
       document.getElementById('micBtn').classList.remove('listening');
       document.getElementById('micBtn').textContent = '🎤';
-      document.getElementById('micStatus').textContent = 'माइक से बोलो';
-      if (e.error === 'not-allowed') showError('माइक allow nahi hai। Type karke try karo।');
+      if (e.error === 'not-allowed') showError('माइक allow नहीं है। Keyboard se type karo।');
     };
   })();
 
   document.getElementById('micBtn').addEventListener('click', () => {
     if (!recognition) { showError('यह browser mic support नहीं करता।'); return; }
     if (isListening) { recognition.stop(); }
-    else {
-      document.getElementById('hindiInput').value = '';
-      hideError();
-      recognition.start();
-    }
+    else { document.getElementById('hindiInput').value = ''; hideError(); recognition.start(); }
+  });
+  document.getElementById('hindiInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.ctrlKey) doTranslate();
   });
 
-  document.getElementById('hindiInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && e.ctrlKey) translate();
-  });
-
-  // ── History ──
+  // History
   let history = [];
 
-  // ── Translate ──
-  async function translate() {
+  // Translate via Groq
+  async function doTranslate() {
     const hindi = document.getElementById('hindiInput').value.trim();
     if (!hindi) { showError('पहले कुछ हिंदी में लिखो!'); return; }
+    if (!getKey()) { showModal(); return; }
 
     hideError();
     setLoading(true);
     document.getElementById('outputSection').classList.remove('show');
 
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + getKey()
+        },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          messages: [{
-            role: 'user',
-            content: `You are an expert English teacher for Hindi speakers. Translate the Hindi sentence accurately and naturally into English. Give pronunciation help and grammar tips in simple Hinglish.
-
-Hindi: "${hindi}"
-
-Reply ONLY with valid JSON, no markdown, no extra text:
-{
-  "english": "accurate natural English translation",
-  "pronunciation": "syllable guide e.g. ai em juhst JOK-ing",
-  "words": [
-    {"en": "word", "hi": "हिंदी अर्थ", "ph": "how-to-say"}
-  ],
-  "tips": ["Hinglish grammar tip 1", "Hinglish tip 2"]
-}`
-          }]
+          model: 'llama-3.1-8b-instant',
+          temperature: 0.3,
+          max_tokens: 800,
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an expert English teacher for Hindi speakers. Translate Hindi sentences to natural English accurately. Reply ONLY with valid JSON, no markdown, no extra text.\n\nFormat:\n{"english":"natural English translation","pronunciation":"syllable guide e.g. ai woz juhst JOK-ing","words":[{"en":"word","hi":"हिंदी अर्थ","ph":"how-to-say"}],"tips":["Hinglish grammar tip 1","Hinglish tip 2"]}'
+            },
+            { role: 'user', content: hindi }
+          ]
         })
       });
 
-      if (!res.ok) throw new Error('API error: ' + res.status);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        if (res.status === 401) throw new Error('API key galat hai। Upar "Key badlo" click karo।');
+        if (res.status === 429) throw new Error('Free limit aa gayi। Thodi der baad try karo।');
+        throw new Error(err.error?.message || 'API error ' + res.status);
+      }
 
       const data = await res.json();
-      const raw = data.content[0].text.replace(/```json|```/g, '').trim();
+      const raw = data.choices[0].message.content.replace(/```json|```/g, '').trim();
       const result = JSON.parse(raw);
-
       showResult(result, hindi);
 
     } catch (err) {
-      showError('Translation fail ho gayi। Kya app GitHub Pages pe host hai? (Error: ' + err.message + ')');
+      showError('❌ ' + err.message);
     } finally {
       setLoading(false);
     }
   }
 
   function showResult(r, hindi) {
-    // English text
     document.getElementById('enText').textContent = r.english;
     document.getElementById('origHindi').textContent = hindi;
 
-    // Pronunciation
     const pb = document.getElementById('pronuncBox');
-    const pt = document.getElementById('pronuncText');
-    if (r.pronunciation) {
-      pt.textContent = r.pronunciation;
-      pb.style.display = 'block';
-    } else {
-      pb.style.display = 'none';
-    }
+    if (r.pronunciation) { document.getElementById('pronuncText').textContent = r.pronunciation; pb.style.display = 'block'; }
+    else { pb.style.display = 'none'; }
 
-    // Word chips
     const wc = document.getElementById('wordsCard');
     const cw = document.getElementById('chipsWrap');
     cw.innerHTML = '';
@@ -601,40 +438,24 @@ Reply ONLY with valid JSON, no markdown, no extra text:
         const chip = document.createElement('div');
         chip.className = 'chip';
         chip.innerHTML = `<span class="chip-en">${w.en}</span><span class="chip-hi">${w.hi}</span>${w.ph ? `<span class="chip-ph">${w.ph}</span>` : ''}`;
-        chip.onclick = () => {
-          speakWord(w.en.split('/')[0].trim());
-          chip.classList.add('active');
-          setTimeout(() => chip.classList.remove('active'), 900);
-        };
+        chip.onclick = () => { speak(w.en.split('/')[0].trim(), 0.75); chip.classList.add('active'); setTimeout(()=>chip.classList.remove('active'),900); };
         cw.appendChild(chip);
       });
       wc.style.display = 'block';
-    } else {
-      wc.style.display = 'none';
-    }
+    } else { wc.style.display = 'none'; }
 
-    // Tips
     const tc = document.getElementById('tipsCard');
     const tl = document.getElementById('tipsList');
     tl.innerHTML = '';
     if (r.tips && r.tips.length) {
-      r.tips.forEach(t => {
-        const d = document.createElement('div');
-        d.className = 'tip-item';
-        d.textContent = t;
-        tl.appendChild(d);
-      });
+      r.tips.forEach(t => { const d = document.createElement('div'); d.className = 'tip-item'; d.textContent = t; tl.appendChild(d); });
       tc.style.display = 'block';
-    } else {
-      tc.style.display = 'none';
-    }
+    } else { tc.style.display = 'none'; }
 
-    // History
     history.unshift({ hindi, english: r.english });
     if (history.length > 6) history.pop();
     renderHistory();
 
-    // Show output
     const out = document.getElementById('outputSection');
     out.classList.add('show');
     setTimeout(() => out.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
@@ -650,69 +471,42 @@ Reply ONLY with valid JSON, no markdown, no extra text:
       const d = document.createElement('div');
       d.className = 'hist-item';
       d.innerHTML = `<div class="hist-num">0${i+2}</div><div><div class="hist-hi">${h.hindi}</div><div class="hist-en">${h.english}</div></div>`;
-      d.onclick = () => {
-        document.getElementById('hindiInput').value = h.hindi;
-        window.scrollTo({ top:0, behavior:'smooth' });
-      };
+      d.onclick = () => { document.getElementById('hindiInput').value = h.hindi; window.scrollTo({top:0,behavior:'smooth'}); };
       hl.appendChild(d);
     });
   }
 
-  // ── Actions ──
-  function speakText() {
-    const text = document.getElementById('enText').textContent;
-    if (!text) return;
-    speak(text, 0.85);
-  }
-
-  function speakWord(word) {
-    speak(word, 0.75);
-  }
-
+  function speakEnglish() { speak(document.getElementById('enText').textContent, 0.85); }
   function speak(text, rate) {
+    if (!text) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US';
-    u.rate = rate || 0.85;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
+    u.lang = 'en-US'; u.rate = rate || 0.85;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
   }
-
   function copyText() {
     const text = document.getElementById('enText').textContent;
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelectorAll('.action-btn')[1];
+      const btn = document.getElementById('copyBtn');
       btn.textContent = '✅ Copied!';
       setTimeout(() => btn.textContent = '📋 Copy', 2000);
     });
   }
-
   function resetAll() {
     document.getElementById('hindiInput').value = '';
     document.getElementById('outputSection').classList.remove('show');
-    hideError();
-    window.scrollTo({ top:0, behavior:'smooth' });
+    hideError(); window.scrollTo({top:0,behavior:'smooth'});
   }
-
-  // ── Helpers ──
   function setLoading(state) {
-    const btn = document.getElementById('translateBtn');
-    const bc  = document.getElementById('btnContent');
-    btn.disabled = state;
-    bc.innerHTML = state
+    document.getElementById('translateBtn').disabled = state;
+    document.getElementById('btnContent').innerHTML = state
       ? '<span class="spinner"></span> Translate हो रहा है...'
       : 'English में बदलो ✨';
   }
+  function showError(msg) { const el = document.getElementById('errorBox'); el.textContent = msg; el.style.display = 'block'; }
+  function hideError() { document.getElementById('errorBox').style.display = 'none'; }
 
-  function showError(msg) {
-    const el = document.getElementById('errorBox');
-    el.textContent = msg;
-    el.style.display = 'block';
-  }
-
-  function hideError() {
-    document.getElementById('errorBox').style.display = 'none';
-  }
+  updateStatus();
 </script>
 </body>
 </html>
