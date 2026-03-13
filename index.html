@@ -260,9 +260,12 @@ textarea:focus{border-color:rgba(240,165,0,0.4)}
         <div class="original-hindi">मूल हिंदी: <span id="origHindi"></span></div>
       </div>
       <div class="words-card" id="wordsCard">
-        <div class="card-label">शब्द सीखो — tap=सुनो, hold=save 📌</div>
+        <div class="card-label">शब्द सीखो — tap=सुनो 🔊</div>
         <div class="chips-wrap" id="chipsWrap"></div>
-        <div class="save-hint">💡 Word pe 1 second hold karo vocab mein save karne ke liye</div>
+        <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+          <button onclick="saveAllWords()" style="flex:1;padding:9px 12px;border-radius:10px;border:1.5px solid rgba(240,165,0,0.3);background:rgba(240,165,0,0.08);color:#f0a500;font-family:Hind,sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer">📌 Sab Words Save Karo</button>
+          <span style="font-size:9px;color:rgba(255,255,255,0.25);font-family:Noto Sans Devanagari,sans-serif">ya chip pe hold karo</span>
+        </div>
       </div>
       <div class="tips-card" id="tipsCard"><div class="card-label">💡 Grammar Tips</div><div id="tipsList"></div></div>
       <div class="action-row">
@@ -446,7 +449,7 @@ async function doTranslate(){
       body:JSON.stringify({
         model:'llama-3.1-8b-instant',temperature:0.2,max_tokens:700,
         messages:[
-          {role:'system',content:'You are an English teacher for Hindi speakers. Translate Hindi to natural English. Output ONLY a single-line JSON object. No newlines inside string values. No apostrophes in values. No markdown. Format: {"english":"translation","pronunciation":"phonetic guide","words":[{"en":"word","hi":"hindi meaning","ph":"phonetic"}],"tips":["tip1","tip2"]}'},
+          {role:'system',content:'You are an English teacher for Hindi speakers. Translate Hindi to English. RULES: (1) Output ONLY valid JSON, single line, no markdown. (2) words array MUST have 3-6 key words from the translation - never leave it empty. (3) No apostrophes in any value. (4) Example output: {"english":"I will fry an egg today","pronunciation":"ai wil frai an eg tuh-DAY","words":[{"en":"fry","hi":"talna","ph":"frai"},{"en":"egg","hi":"anda","ph":"eg"},{"en":"today","hi":"aaj","ph":"tuh-DAY"}],"tips":["will + verb = future tense","an egg - vowel se pehle an aata hai"]}'},
           {role:'user',content:hindi}
         ]
       })
@@ -476,6 +479,7 @@ async function doTranslate(){
 }
 
 function showResult(r,hindi){
+  window._lastWords=r.words||[];
   document.getElementById('enText').textContent=r.english;
   document.getElementById('origHindi').textContent=hindi;
   const pb=document.getElementById('pronuncBox');
@@ -485,11 +489,13 @@ function showResult(r,hindi){
   if(r.words&&r.words.length){
     r.words.forEach(w=>{
       const chip=document.createElement('div');chip.className='chip';
-      if(vocab.some(v=>v.en===w.en))chip.classList.add('saved');
-      chip.innerHTML=`<span class="chip-en">${w.en}</span><span class="chip-hi">${w.hi||''}</span>${w.ph?`<span class="chip-ph">${w.ph}</span>`:''}`;
+      const alreadySaved=vocab.some(v=>v.en===w.en);
+      if(alreadySaved)chip.classList.add('saved');
+      chip.innerHTML=`<span class="chip-en">${w.en} ${alreadySaved?'📌':''}</span><span class="chip-hi">${w.hi||''}</span>${w.ph?`<span class="chip-ph">${w.ph}</span>`:''}`;
+      chip.title='Tap: sunna | Hold: vocab save';
       chip.addEventListener('click',()=>{speak(w.en.split('/')[0].trim(),0.75);chip.classList.add('active');setTimeout(()=>chip.classList.remove('active'),900);});
       let pt;
-      chip.addEventListener('touchstart',()=>{pt=setTimeout(()=>saveWord(w,chip),700);},{passive:true});
+      chip.addEventListener('touchstart',()=>{pt=setTimeout(()=>{saveWord(w,chip);},700);},{passive:true});
       chip.addEventListener('touchend',()=>clearTimeout(pt));
       chip.addEventListener('touchmove',()=>clearTimeout(pt));
       chip.addEventListener('contextmenu',e=>{e.preventDefault();saveWord(w,chip);});
@@ -520,6 +526,20 @@ function renderHistory(){
 }
 
 // Vocab
+function saveAllWords(){
+  const chips=document.querySelectorAll('#chipsWrap .chip');
+  let count=0;
+  // get current words from last result
+  if(!window._lastWords||!window._lastWords.length){showToast('Koi words nahi mile!');return;}
+  window._lastWords.forEach((w,i)=>{
+    if(!vocab.some(v=>v.en===w.en)){
+      vocab.push(w); count++;
+      if(chips[i])chips[i].classList.add('saved');
+    }
+  });
+  S.set('vocab',vocab);
+  showToast(count>0?'📌 '+count+' words save ho gaye!':'Sab words pehle se saved hain!');
+}
 function saveWord(w,chip){
   if(vocab.some(v=>v.en===w.en)){showToast('Already saved hai!');return;}
   vocab.push(w);S.set('vocab',vocab);chip.classList.add('saved');
