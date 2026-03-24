@@ -1,42 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title> Tableau Existing | Accan </title>
+<title>Tableau Dashboard | Accan</title>
 <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
-    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: #f2f2f2;
   }
 
-  /* Top black header */
   .top-header {
-    background: #000000;
+    background: #000;
     padding: 20px 40px;
     display: flex;
     align-items: center;
   }
-
   .top-header img {
-    height: 48px;       /* desktop logo size */
+    height: 48px;
     max-width: 100%;
   }
 
-  /* Section title */
-  .section-title {
-    background: #e9e9e9;
-    padding: 30px;
-    font-size: 36px;
-    font-weight: bold;
-    color: #000;
-  }
-
-  /* Tableau wrapper */
   .tableau-wrapper {
-    background: #ffffff;
+    background: #fff;
     padding: 40px 0;
     display: flex;
     justify-content: center;
@@ -48,7 +36,7 @@
     max-width: 1400px;
     height: 1850px;
     overflow: hidden;
-    background: #ffffff;
+    background: #fff;
   }
 
   .tableau-wix-container iframe {
@@ -61,53 +49,168 @@
   .tableau-wix-container::after {
     content: "";
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    background: #ffffff;
-    z-index: 9999;
+    bottom: 0; left: 0;
+    width: 100%; height: 50px;
+    background: #fff;
+    z-index: 10;
     pointer-events: none;
   }
 
-  /* Mobile */
+  /* Backdrop */
+  #zoom-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    z-index: 10000;
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.22s ease;
+  }
+  #zoom-backdrop.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* Modal */
+  .zoom-modal {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.55);
+    overflow: hidden;
+    animation: popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    max-width: 96vw;
+    max-height: 92vh;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.88); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+
+  .zoom-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: #000;
+    color: #fff;
+  }
+  .zoom-modal-header span {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .zoom-close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .zoom-close-btn:hover { background: rgba(255,255,255,0.15); }
+
+  .modal-iframe-wrap iframe {
+    display: block;
+    border: 0;
+  }
+
   @media screen and (max-width: 768px) {
-    .top-header {
-      padding: 16px;
-    }
-
-    .top-header img {
-      height: 36px;   /* smaller logo on mobile */
-    }
-
-    .section-title {
-      font-size: 26px;
-      padding: 24px;
-    }
-
-    .tableau-wix-container {
-      height: 3050px;
-    }
+    .top-header { padding: 16px; }
+    .top-header img { height: 36px; }
+    .tableau-wix-container { height: 3050px; }
   }
 </style>
 </head>
-
 <body>
 
-  <!-- Logo Header -->
-  <div class="top-header">
-    <img src="https://i.ibb.co/Nj0PYDw/Pegion.jpg" alt="Pegion Logo">
-  </div>
+<div class="top-header">
+  <img src="https://i.ibb.co/Nj0PYDw/Pegion.jpg" alt="Pegion Logo">
+</div>
 
-  <div class="tableau-wrapper">
-    <div class="tableau-wix-container">
-      <iframe width="900px" height="1500px" 
-        src="https://public.tableau.com/views/Trial_17743318838450/Dashboard1?:showVizHome=no&toolbar=no"
-        scrolling="no"
-        allowfullscreen>
-      </iframe>
+<div class="tableau-wrapper">
+  <div class="tableau-wix-container">
+    <iframe
+      src="https://public.tableau.com/views/Trial_17743318838450/Dashboard1?:showVizHome=no&toolbar=no"
+      scrolling="no"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<!-- Zoom Modal -->
+<div id="zoom-backdrop">
+  <div class="zoom-modal">
+    <div class="zoom-modal-header">
+      <span id="modalChartName">Chart</span>
+      <button class="zoom-close-btn" id="closeModalBtn" title="Close (Esc)">✕</button>
     </div>
+    <div class="modal-iframe-wrap" id="modalIframeWrap"></div>
   </div>
+</div>
 
+<script>
+(function () {
+  const BASE_URL = "https://public.tableau.com/views/Trial_17743318838450/";
+  const backdrop = document.getElementById("zoom-backdrop");
+  const nameEl   = document.getElementById("modalChartName");
+  const wrapEl   = document.getElementById("modalIframeWrap");
+  const closeBtn = document.getElementById("closeModalBtn");
+
+  const MODAL_W = Math.min(Math.round(window.innerWidth  * 0.88), 1300);
+  const MODAL_H = Math.min(Math.round(window.innerHeight * 0.80), 820);
+
+  wrapEl.style.width  = MODAL_W + "px";
+  wrapEl.style.height = MODAL_H + "px";
+
+  // Sheet name → display label mapping
+  const SHEET_LABELS = {
+    Sheet1: "Sheet 1 – Series title 1",
+    Sheet2: "Sheet 2 – Series title 2",
+    Sheet3: "Sheet 3 – Series title 3",
+    Sheet4: "Sheet 4 – Series title 4",
+    Sheet5: "Sheet 5 – Series title 5",
+    Sheet6: "Sheet 6 – Status",
+    Sheet7: "Sheet 7 – Subject",
+    Sheet8: "Sheet 8 – Units",
+  };
+
+  function openModal(sheet) {
+    nameEl.textContent = SHEET_LABELS[sheet] || sheet;
+    const url = BASE_URL + sheet + "?:showVizHome=no&:toolbar=no&:embed=y";
+    wrapEl.innerHTML = `<iframe src="${url}" width="${MODAL_W}" height="${MODAL_H}" allowfullscreen></iframe>`;
+    backdrop.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    backdrop.classList.remove("active");
+    document.body.style.overflow = "";
+    setTimeout(() => { wrapEl.innerHTML = ""; }, 260);
+  }
+
+  // ── Triggered by Tableau image button URL ──────────────────────────────────
+  // In Tableau Desktop, for each chart's zoom image button, set the URL to:
+  //   https://your-hosted-page.html?zoom=Sheet1
+  //   https://your-hosted-page.html?zoom=Sheet2  … etc.
+  //
+  // When Tableau opens that URL in the browser, this page reads the
+  // ?zoom=SheetX param and immediately opens the modal for that sheet.
+  // ──────────────────────────────────────────────────────────────────────────
+  const params    = new URLSearchParams(window.location.search);
+  const zoomSheet = params.get("zoom");
+  if (zoomSheet) openModal(zoomSheet);
+
+  closeBtn.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", e => { if (e.target === backdrop) closeModal(); });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && backdrop.classList.contains("active")) closeModal();
+  });
+})();
+</script>
 </body>
 </html>
