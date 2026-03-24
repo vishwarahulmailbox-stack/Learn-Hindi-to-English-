@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tableau Dashboard | Accan</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+  }
+
+  .top-header {
+    background: #000;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+  }
+  .top-header img { height: 48px; max-width: 100%; }
+
+  .tableau-wrapper {
+    background: #fff;
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .tableau-wix-container {
+    position: relative;
+    width: 95%;
+    max-width: 1400px;
+    height: 1850px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .tableau-wix-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    /* iframe is fully interactive — user can still use charts normally */
+  }
+
+  /* Hide Tableau footer toolbar */
+  .tableau-wix-container::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 50px;
+    background: #fff;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  /* ── Zoom button overlays ──
+     These sit ONLY over the zoom image buttons you placed in Tableau.
+     Adjust top/left/width/height per button to match exactly.
+     Use the debug helper at the bottom to find coordinates easily.
+  ── */
+  .zoom-btn {
+    position: absolute;
+    z-index: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    /* Transparent by default — sits invisibly over your Tableau image */
+    background: transparent;
+    transition: background 0.15s;
+  }
+  .zoom-btn:hover {
+    background: rgba(52, 110, 163, 0.15);
+    outline: 2px solid rgba(52, 110, 163, 0.4);
+  }
+
+  /* ── Modal backdrop ── */
+  #zoom-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    z-index: 10000;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  #zoom-backdrop.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.22s ease;
+  }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+  /* ── Modal box ── */
+  .zoom-modal {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.55);
+    overflow: hidden;
+    animation: popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    max-width: 96vw;
+    max-height: 92vh;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.88); opacity:0; }
+    to   { transform: scale(1);    opacity:1; }
+  }
+
+  .zoom-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: #000;
+    color: #fff;
+  }
+  .zoom-modal-header span { font-size: 15px; font-weight: 600; }
+
+  .zoom-close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .zoom-close-btn:hover { background: rgba(255,255,255,0.15); }
+
+  .modal-iframe-wrap iframe { display: block; border: 0; }
+
+  /* ── Debug mode — add ?debug to URL to see all overlay positions ── */
+  body.debug-mode .zoom-btn {
+    background: rgba(255, 0, 0, 0.25) !important;
+    outline: 2px dashed red !important;
+  }
+  body.debug-mode .zoom-btn::after {
+    content: attr(data-sheet);
+    position: absolute;
+    top: 2px; left: 4px;
+    font-size: 10px;
+    color: red;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .top-header { padding: 16px; }
+    .top-header img { height: 36px; }
+    .tableau-wix-container { height: 3050px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-header">
+  <img src="https://i.ibb.co/Nj0PYDw/Pegion.jpg" alt="Pegion Logo">
+</div>
+
+<div class="tableau-wrapper">
+  <div class="tableau-wix-container" id="mainContainer">
+
+    <!-- Main dashboard iframe — fully interactive as normal -->
+    <iframe
+      src="https://public.tableau.com/views/Trial_17743318838450/Dashboard1?:showVizHome=no&toolbar=no"
+      scrolling="no"
+      allowfullscreen>
+    </iframe>
+
+    <!--
+    ════════════════════════════════════════════════════════════
+      ZOOM BUTTON OVERLAYS
+      Each div sits over one zoom image button in your Tableau dashboard.
+
+      HOW TO POSITION:
+      1. Add ?debug to your page URL (e.g. tableau.html?debug)
+         — this shows all overlays in red so you can see them
+      2. Adjust top/left to match where you placed each zoom image in Tableau
+      3. width/height should match the size of your zoom image (e.g. 32px × 32px)
+      4. Remove ?debug when done
+
+      COORDINATES are relative to the top-left of the iframe.
+      top: distance from top of dashboard
+      left: distance from left of dashboard
+    ════════════════════════════════════════════════════════════
+    -->
+
+    <!-- Sheet 3 zoom button — top-left chart -->
+    <div class="zoom-btn"
+         data-sheet="Sheet3"
+         data-name="Sheet 3 – Series title 3"
+         style="top: 88px; left: 20px; width: 32px; height: 32px;">
+    </div>
+
+    <!-- Sheet 6 zoom button — top-center chart -->
+    <div class="zoom-btn"
+         data-sheet="Sheet6"
+         data-name="Sheet 6 – Status"
+         style="top: 88px; left: 210px; width: 32px; height: 32px;">
+    </div>
+
+    <!-- Sheet 1 zoom button — large right chart -->
+    <div class="zoom-btn"
+         data-sheet="Sheet1"
+         data-name="Sheet 1 – Series title 1"
+         style="top: 88px; right: 20px; width: 32px; height: 32px;">
+    </div>
+
+    <!-- Sheet 8 zoom button — middle-left -->
+    <div class="zoom-btn"
+         data-sheet="Sheet8"
+         data-name="Sheet 8 – Units"
+         style="top: 445px; left: 20px; width: 32px; height: 32px;">
+    </div>
+
+    <!-- Sheet 4 zoom button — middle-center -->
+    <div class="zoom-btn"
+         data-sheet="Sheet4"
+         data-name="Sheet 4 – Series title 4"
+         style="top: 445px; left: 210px; width: 32px; height: 32px;">
+    </div>
+
+    <!-- Sheet 7 zoom button — subject bar -->
+    <div class="zoom-btn"
+         data-sheet="Sheet7"
+         data-name="Sheet 7 – Subject"
+         style="top: 800px; left: 20px; width: 32px; height: 32px;">
+    </div>
+
+    <!-- Sheet 5 zoom button — horizontal bar -->
+    <div class="zoom-btn"
+         data-sheet="Sheet5"
+         data-name="Sheet 5 – Series title 5"
+         style="top: 1000px; left: 20px; width: 32px; height: 32px;">
+    </div>
+
+    <!-- Sheet 2 zoom button — bottom wide chart -->
+    <div class="zoom-btn"
+         data-sheet="Sheet2"
+         data-name="Sheet 2 – Series title 2"
+         style="top: 1165px; left: 20px; width: 32px; height: 32px;">
+    </div>
+
+  </div>
+</div>
+
+<!-- Zoom Modal -->
+<div id="zoom-backdrop">
+  <div class="zoom-modal" id="zoomModal">
+    <div class="zoom-modal-header">
+      <span id="modalChartName">Chart</span>
+      <button class="zoom-close-btn" id="closeModalBtn" title="Close (Esc)">✕</button>
+    </div>
+    <div class="modal-iframe-wrap" id="modalIframeWrap"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const BASE_URL = "https://public.tableau.com/views/Trial_17743318838450/";
+  const backdrop = document.getElementById("zoom-backdrop");
+  const modal    = document.getElementById("zoomModal");
+  const nameEl   = document.getElementById("modalChartName");
+  const wrapEl   = document.getElementById("modalIframeWrap");
+  const closeBtn = document.getElementById("closeModalBtn");
+
+  const MODAL_W = Math.min(Math.round(window.innerWidth  * 0.88), 1300);
+  const MODAL_H = Math.min(Math.round(window.innerHeight * 0.80), 820);
+
+  modal.style.width   = MODAL_W + "px";
+  wrapEl.style.width  = MODAL_W + "px";
+  wrapEl.style.height = MODAL_H + "px";
+
+  function openModal(btn) {
+    const sheet = btn.dataset.sheet;
+    const name  = btn.dataset.name;
+    nameEl.textContent = name;
+    const url = BASE_URL + sheet + "?:showVizHome=no&:toolbar=no&:embed=y";
+    wrapEl.innerHTML = `<iframe src="${url}" width="${MODAL_W}" height="${MODAL_H}" allowfullscreen style="border:0"></iframe>`;
+    backdrop.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    backdrop.classList.remove("active");
+    document.body.style.overflow = "";
+    setTimeout(() => { wrapEl.innerHTML = ""; }, 260);
+  }
+
+  // Wire up zoom buttons
+  document.querySelectorAll(".zoom-btn").forEach(btn => {
+    btn.addEventListener("click", () => openModal(btn));
+  });
+
+  closeBtn.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", e => { if (e.target === backdrop) closeModal(); });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && backdrop.classList.contains("active")) closeModal();
+  });
+
+  // Debug mode — add ?debug to URL to visualise overlay positions
+  if (new URLSearchParams(window.location.search).has("debug")) {
+    document.body.classList.add("debug-mode");
+  }
+})();
+</script>
+</body>
+</html>
