@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html><body><script>
+  const sheet = new URLSearchParams(location.search).get("zoom");
+  // Walk up to the top-level dashboard window and post a message
+  if (window.top) {
+    window.top.postMessage({ type: "tableau-zoom", sheet: sheet }, "*");
+  }
+</script></body></html>
